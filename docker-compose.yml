@@ -7,6 +7,8 @@ services:
     environment:
       ORACLE_PASSWORD: ${ORACLE_PASSWORD}
       ORACLE_CHARACTERSET: AL32UTF8
+      APP_USER: ${APP_USER}
+      APP_USER_PASSWORD: ${APP_USER_PASSWORD}
 
     ports:
       - "1521:1521"
