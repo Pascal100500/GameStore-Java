@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<header>
+    <h1>🎮 GameStore</h1>
+    <p>Магазин компьютерных игр</p>
+
+    <!-- Гость: ссылка для входа -->
+    <div th:if="${#authorization.expression('isAnonymous()')}">
+        <a th:href="@{/login}">Войти</a>
+    </div>
+
+    <!-- Авторизованный пользователь -->
+    <div th:if="${#authorization.expression('isAuthenticated()')}">
+        <p>
+            Вы вошли как:
+            <strong th:text="${#authentication.name}">Пользователь</strong>
+        </p>
+
+        <form th:action="@{/logout}" method="post">
+            <button type="submit">Выйти</button>
+        </form>
+    </div>
+</header>
+<body>
+
+<header>
+    <h1>🎮 GameStore</h1>
+    <p>Магазин компьютерных игр</p>
+</header>
+
+<hr>
+
+<main>
+    <h2>Добро пожаловать в GameStore!</h2>
+
+    <p>
+        Наш магазин компьютерных игр
+        разрабатывается на Java и Spring Boot.
+    </p>
+
+    <p>
+        Скоро здесь появятся каталог игр,
+        категории, покупки и личный кабинет.
+    </p>
+</main>
+
+<hr>
+
+<footer>
+    <p>&copy; 2026 GameStore</p>
+</footer>
+
+</body>
+</html>
