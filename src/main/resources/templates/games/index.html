@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>GameStore — Каталог игр</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<header>
+    <h1>🎮 GameStore</h1>
+    <p>Каталог компьютерных игр</p>
+
+    <nav>
+        <a th:href="@{/}">Главная</a>
+    </nav>
+</header>
+
+<main>
+    <h2>Каталог игр</h2>
+
+    <!-- Сообщение, если игр пока нет -->
+    <p th:if="${#lists.isEmpty(games)}">
+        В каталоге пока нет игр.
+    </p>
+
+    <!-- Таблица с играми -->
+    <table th:unless="${#lists.isEmpty(games)}"
+           border="1" cellpadding="10">
+
+        <thead>
+        <tr>
+            <th>Название</th>
+            <th>Цена</th>
+            <th>Возраст</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="game : ${games}">
+            <td th:text="${game.title}">Название игры</td>
+
+            <td th:text="|${game.price} ₽|">0 ₽</td>
+
+            <td th:text="${game.ageLimit != null
+                    ? game.ageLimit + '+'
+                    : 'Не указано'}">
+                Возраст
+            </td>
+        </tr>
+        </tbody>
+
+    </table>
+</main>
+
+<footer>
+    <p>&copy; 2026 GameStore</p>
+</footer>
+
+</body>
+</html>

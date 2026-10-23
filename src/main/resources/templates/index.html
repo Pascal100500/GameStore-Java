@@ -1,5 +1,18 @@
 <!DOCTYPE html>
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>GameStore — Главная</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
 <header>
     <h1>🎮 GameStore</h1>
     <p>Магазин компьютерных игр</p>
@@ -13,7 +26,9 @@
     <div th:if="${#authorization.expression('isAuthenticated()')}">
         <p>
             Вы вошли как:
-            <strong th:text="${#authentication.name}">Пользователь</strong>
+            <strong th:text="${#authentication.name}">
+                Пользователь
+            </strong>
         </p>
 
         <form th:action="@{/logout}" method="post">
@@ -21,14 +36,6 @@
         </form>
     </div>
 </header>
-<body>
-
-<header>
-    <h1>🎮 GameStore</h1>
-    <p>Магазин компьютерных игр</p>
-</header>
-
-<hr>
 
 <main>
     <h2>Добро пожаловать в GameStore!</h2>
@@ -43,8 +50,6 @@
         категории, покупки и личный кабинет.
     </p>
 </main>
-
-<hr>
 
 <footer>
     <p>&copy; 2026 GameStore</p>
