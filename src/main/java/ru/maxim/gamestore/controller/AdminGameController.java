@@ -72,10 +72,10 @@ public class AdminGameController {
         if (cover != null && !cover.isEmpty()) {
 
             try {
-                String objectName = minioService.uploadFile(cover);
+                coverKey = minioService.uploadFile(cover);
 
                 System.out.println(
-                        "MinIO: обложка загружена — " + objectName
+                        "MinIO: обложка загружена — " + coverKey
                 );
 
             } catch (Exception e) {
