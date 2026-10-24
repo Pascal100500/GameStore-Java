@@ -6,6 +6,7 @@ import io.minio.PutObjectArgs;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import io.minio.GetObjectArgs;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -85,6 +86,22 @@ public class MinioService {
         }
 
         return objectName;
+    }
+
+    public InputStream getFile(String objectName) throws Exception {
+
+        if (objectName == null || objectName.isBlank()) {
+            throw new IllegalArgumentException(
+                    "Имя файла не указано"
+            );
+        }
+
+        return minioClient.getObject(
+                GetObjectArgs.builder()
+                        .bucket(bucketName)
+                        .object(objectName)
+                        .build()
+        );
     }
 
 }

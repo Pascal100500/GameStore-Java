@@ -30,6 +30,17 @@ public class GameService {
         return gameRepository.findByIsActiveTrue();
     }
 
+    @Transactional(readOnly = true)
+    public Game getGameById(Long id) {
+
+        return gameRepository.findById(id)
+                .orElseThrow(() ->
+                        new IllegalArgumentException(
+                                "Game not found: " + id
+                        )
+                );
+    }
+
     @Transactional
     public Game createGame(
             String title,
