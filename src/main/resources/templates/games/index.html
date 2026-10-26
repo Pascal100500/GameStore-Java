@@ -13,54 +13,86 @@
 
 <body>
 
-<header>
-    <h1>🎮 GameStore</h1>
-    <p>Каталог компьютерных игр</p>
+<header class="site-header">
+    <div class="header-content">
+        <div>
+            <h1>🎮 GameStore</h1>
+            <p>Каталог компьютерных игр</p>
+        </div>
 
-    <nav>
-        <a th:href="@{/}">Главная</a>
-    </nav>
+        <nav>
+            <a th:href="@{/}">Главная</a>
+            <a th:href="@{/games}">Игры</a>
+        </nav>
+    </div>
 </header>
 
-<main>
-    <h2>Каталог игр</h2>
+<main class="container">
 
-    <!-- Сообщение, если игр пока нет -->
-    <p th:if="${#lists.isEmpty(games)}">
-        В каталоге пока нет игр.
-    </p>
+    <div class="catalog-heading">
+        <h2>Каталог игр</h2>
+        <p>Выберите игру, которая вам понравится</p>
+    </div>
 
-    <!-- Таблица с играми -->
-    <table th:unless="${#lists.isEmpty(games)}"
-           border="1" cellpadding="10">
+    <!-- Если активных игр нет -->
+    <div class="empty-catalog"
+         th:if="${#lists.isEmpty(games)}">
+        <p>В каталоге пока нет игр.</p>
+    </div>
 
-        <thead>
-        <tr>
-            <th>Название</th>
-            <th>Цена</th>
-            <th>Возраст</th>
-        </tr>
-        </thead>
+    <!-- Сетка карточек -->
+    <div class="games-grid"
+         th:unless="${#lists.isEmpty(games)}">
 
-        <tbody>
-        <tr th:each="game : ${games}">
-            <td th:text="${game.title}">Название игры</td>
+        <article class="game-card"
+                 th:each="game : ${games}">
 
-            <td th:text="|${game.price} ₽|">0 ₽</td>
+            <div class="game-cover">
+                <img th:src="${game.coverKey != null
+                         and !#strings.isEmpty(game.coverKey)
+                         ? '/games/' + game.id + '/cover'
+                         : '/images/placeholder.jpg'}"
+                     th:alt="|Обложка игры ${game.title}|"
+                     loading="lazy">
+            </div>
 
-            <td th:text="${game.ageLimit != null
-                    ? game.ageLimit + '+'
-                    : 'Не указано'}">
-                Возраст
-            </td>
-        </tr>
-        </tbody>
+            <div class="game-info">
 
-    </table>
+                <h3 th:text="${game.title}">
+                    Название игры
+                </h3>
+
+                <a class="game-details-button"
+                   th:href="@{/games/{id}(id=${game.id})}">
+                    Подробнее
+                </a>
+
+                <div class="game-details">
+
+                    <span class="game-price"
+                          th:text="|${game.price} ₽|">
+                        0 ₽
+                    </span>
+
+                    <span class="age-badge"
+                          th:text="${game.ageLimit != null
+                                  ? game.ageLimit + '+'
+                                  : 'Без ограничений'}">
+                        12+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </article>
+
+    </div>
+
 </main>
 
-<footer>
-    <p>&copy; 2026 GameStore</p>
+<footer class="site-footer">
+    <p>© 2026 GameStore</p>
 </footer>
 
 </body>

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title th:text="|Редактирование: ${game.title} — GameStore|">
+        Редактирование игры
+    </title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<header class="site-header">
+    <div class="header-content">
+        <div>
+            <h1>🎮 GameStore</h1>
+            <p>Панель управления играми</p>
+        </div>
+
+        <nav>
+            <a th:href="@{/}">Главная</a>
+            <a th:href="@{/games}">Игры</a>
+        </nav>
+    </div>
+</header>
+
+<main class="container">
+
+    <a class="back-link"
+       th:href="@{/games/{id}(id=${game.id})}">
+        ← Вернуться к игре
+    </a>
+
+    <h2 th:text="|Редактирование игры: ${game.title}|">
+        Редактирование игры
+    </h2>
+
+    <!-- Сообщения об ошибках и успешном сохранении -->
+
+    <div class="form-error"
+         th:if="${error}"
+         th:text="${error}">
+    </div>
+
+    <div class="form-success"
+         th:if="${success}"
+         th:text="${success}">
+    </div>
+
+    <!-- Форма редактирования -->
+
+    <form method="post"
+          enctype="multipart/form-data"
+          th:action="@{/admin/games/{id}/edit(id=${game.id})}"
+          class="game-edit-form">
+
+        <!-- CSRF-токен для Spring Security -->
+        <input type="hidden"
+               th:if="${_csrf != null}"
+               th:name="${_csrf.parameterName}"
+               th:value="${_csrf.token}">
+
+        <div class="form-group">
+            <label for="title">Название игры</label>
+
+            <input type="text"
+                   id="title"
+                   name="title"
+                   th:value="${game.title}"
+                   maxlength="150"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Описание игры</label>
+
+            <textarea id="description"
+                      name="description"
+                      rows="8"
+                      maxlength="2000"
+                      th:text="${game.description}"></textarea>
+
+            <small>Максимум 2000 символов.</small>
+        </div>
+
+        <div class="form-group">
+            <label for="price">Цена (₽)</label>
+
+            <input type="number"
+                   id="price"
+                   name="price"
+                   th:value="${game.price}"
+                   min="0"
+                   max="99999999.99"
+                   step="0.01"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <label for="ageLimit">Возрастное ограничение</label>
+
+            <input type="number"
+                   id="ageLimit"
+                   name="ageLimit"
+                   th:value="${game.ageLimit}"
+                   min="0">
+        </div>
+
+        <div class="form-group">
+            <label for="categoryId">Категория</label>
+
+            <select id="categoryId"
+                    name="categoryId"
+                    required>
+
+                <option th:each="category : ${categories}"
+                        th:value="${category.id}"
+                        th:text="${category.name}"
+                        th:selected="${category.id == game.category.id}">
+                    Категория
+                </option>
+
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label class="checkbox-label">
+                <input type="checkbox"
+                       name="isActive"
+                       value="true"
+                       th:checked="${game.isActive}">
+                Игра активна
+            </label>
+        </div>
+
+        <!-- Текущая обложка -->
+
+        <div class="form-group">
+
+            <label>Текущая обложка</label>
+
+            <div th:if="${game.coverKey != null
+                         and !#strings.isEmpty(game.coverKey)}">
+
+                <img class="edit-cover-preview"
+                     th:src="@{/games/{id}/cover(id=${game.id})}"
+                     th:alt="|Обложка ${game.title}|">
+
+            </div>
+
+            <p th:unless="${game.coverKey != null
+                           and !#strings.isEmpty(game.coverKey)}">
+                Обложка пока не загружена.
+            </p>
+
+        </div>
+
+        <!-- Замена обложки -->
+
+        <div class="form-group">
+            <label for="cover">Заменить обложку</label>
+
+            <input type="file"
+                   id="cover"
+                   name="cover"
+                   accept="image/jpeg,image/png,image/webp">
+
+            <small>
+                Оставьте поле пустым, чтобы сохранить текущую обложку.
+            </small>
+        </div>
+
+        <!-- Скриншоты игры -->
+
+        <h3>Скриншоты игры</h3>
+
+        <p>
+            Можно загрузить до трёх скриншотов.
+            Если файл не выбран, существующий скриншот сохранится.
+        </p>
+
+        <div class="form-group">
+            <label for="screenshot1">Скриншот 1</label>
+
+            <input type="file"
+                   id="screenshot1"
+                   name="screenshot1"
+                   accept="image/jpeg,image/png,image/webp">
+        </div>
+
+        <div class="form-group">
+            <label for="screenshot2">Скриншот 2</label>
+
+            <input type="file"
+                   id="screenshot2"
+                   name="screenshot2"
+                   accept="image/jpeg,image/png,image/webp">
+        </div>
+
+        <div class="form-group">
+            <label for="screenshot3">Скриншот 3</label>
+
+            <input type="file"
+                   id="screenshot3"
+                   name="screenshot3"
+                   accept="image/jpeg,image/png,image/webp">
+        </div>
+
+        <button type="submit" class="save-game-button">
+            Сохранить изменения
+        </button>
+
+    </form>
+
+</main>
+
+<footer class="site-footer">
+    <p>© 2026 GameStore</p>
+</footer>
+
+</body>
+</html>

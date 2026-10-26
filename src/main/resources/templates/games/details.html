@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title th:text="|${game.title} — GameStore|">
+        GameStore — Информация об игре
+    </title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<header class="site-header">
+    <div class="header-content">
+        <div>
+            <h1>🎮 GameStore</h1>
+            <p>Каталог компьютерных игр</p>
+        </div>
+
+        <nav>
+            <a th:href="@{/}">Главная</a>
+            <a th:href="@{/games}">Игры</a>
+        </nav>
+    </div>
+</header>
+
+<main class="container">
+
+    <a class="back-link" th:href="@{/games}">
+        ← Вернуться в каталог
+    </a>
+
+    <article class="game-details-card">
+
+        <!-- Обложка -->
+        <div class="details-cover">
+            <img th:src="${game.coverKey != null
+                     and !#strings.isEmpty(game.coverKey)
+                     ? '/games/' + game.id + '/cover'
+                     : '/images/placeholder.jpg'}"
+                 th:alt="|Обложка игры ${game.title}|">
+        </div>
+
+        <!-- Информация -->
+        <div class="details-content">
+
+            <h2 th:text="${game.title}">
+                Название игры
+            </h2>
+
+            <div class="details-meta">
+
+                <span class="game-price"
+                      th:text="|${game.price} ₽|">
+                    0 ₽
+                </span>
+
+                <span class="age-badge"
+                      th:text="${game.ageLimit != null
+                              ? game.ageLimit + '+'
+                              : 'Не указано'}">
+                    12+
+                </span>
+
+            </div>
+
+            <h3>Описание игры</h3>
+
+            <p class="game-description"
+               th:if="${game.description != null
+                       and !#strings.isEmpty(game.description)}"
+               th:text="${game.description}">
+                Здесь будет описание игры.
+            </p>
+
+            <p class="no-description"
+               th:if="${game.description == null
+                       or #strings.isEmpty(game.description)}">
+                Описание пока не добавлено.
+            </p>
+
+            <!-- Управление игрой -->
+            <div class="game-management"
+                 sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
+
+                <a class="btn-edit"
+                   th:href="@{/admin/games/{id}/edit(id=${game.id})}">
+                    ✏️ Редактировать
+                </a>
+
+            </div>
+
+        </div>
+
+    </article>
+
+</main>
+
+<footer class="site-footer">
+    <p>© 2026 GameStore</p>
+</footer>
+
+</body>
+</html>

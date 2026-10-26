@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.http.HttpMethod;
 
 @Configuration
 public class SecurityConfig {
@@ -14,8 +15,18 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/login", "/games", "/css/**",
+                        .requestMatchers("/", "/login", "/games", "/games/*/cover", "/games/*",
+                                "/css/**",
                                 "/js/**", "/images/**").permitAll()
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/admin/games/{id}/edit"
+                        ).hasAnyRole("ADMIN", "MANAGER")
+
+                        .requestMatchers(
+                                HttpMethod.POST,
+                                "/admin/games/{id}/edit"
+                        ).hasAnyRole("ADMIN", "MANAGER")
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/manager/**").hasAnyRole("MANAGER", "ADMIN")
                         .requestMatchers("/user/**").hasAnyRole("USER", "MANAGER", "ADMIN")

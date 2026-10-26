@@ -36,6 +36,15 @@ public class Game {
     @Column(name = "cover_key", length = 255)
     private String coverKey;
 
+    @Column(name = "screenshot1_key", length = 255)
+    private String screenshot1Key;
+
+    @Column(name = "screenshot2_key", length = 255)
+    private String screenshot2Key;
+
+    @Column(name = "screenshot3_key", length = 255)
+    private String screenshot3Key;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;

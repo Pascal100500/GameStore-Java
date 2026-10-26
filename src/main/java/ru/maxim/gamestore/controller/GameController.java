@@ -16,6 +16,9 @@ import ru.maxim.gamestore.entity.Game;
 
 import java.io.InputStream;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
+
 @Controller
 public class GameController {
 
@@ -39,6 +42,32 @@ public class GameController {
         );
 
         return "games/index";
+    }
+
+    @GetMapping("/games/{id}")
+    public String details(@PathVariable Long id, Model model) {
+
+        Game game;
+
+        try {
+            game = gameService.getGameById(id);
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Игра не найдена"
+            );
+        }
+
+        if (!Boolean.TRUE.equals(game.getIsActive())) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Игра не найдена"
+            );
+        }
+
+        model.addAttribute("game", game);
+
+        return "games/details";
     }
 
     @GetMapping("/games/{id}/cover")
