@@ -165,6 +165,22 @@ public class AdminGameController {
         return "redirect:/admin/games/" + id + "/edit";
     }
 
+    @PostMapping("/admin/games/{id}/delete")
+    public String delete(
+            @PathVariable Long id,
+            RedirectAttributes redirectAttributes
+    ) {
+
+        gameService.deactivateGame(id);
+
+        redirectAttributes.addFlashAttribute(
+                "success",
+                "Игра успешно скрыта из каталога!"
+        );
+
+        return "redirect:/games";
+    }
+
     @PostMapping("/admin/games/create")
     public String store(
             @RequestParam String title,

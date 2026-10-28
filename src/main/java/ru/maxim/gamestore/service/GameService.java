@@ -11,6 +11,11 @@ import ru.maxim.gamestore.entity.Category;
 import java.math.BigDecimal;
 import ru.maxim.gamestore.repository.CategoryRepository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+
 @Service
 public class GameService {
 
@@ -140,5 +145,30 @@ public class GameService {
                                 "Game not found: " + id
                         )
                 );
+    }
+
+    @Transactional
+    public void deactivateGame(Long id) {
+
+        Game game = gameRepository.findById(id)
+                .orElseThrow(() ->
+                        new IllegalArgumentException(
+                                "Игра с ID " + id + " не найдена"
+                        )
+                );
+
+        game.setIsActive(false);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Game> getActiveGamesPage(int page) {
+
+        Pageable pageable = PageRequest.of(
+                page,
+                6,
+                Sort.by("id").ascending()
+        );
+
+        return gameRepository.findByIsActiveTrue(pageable);
     }
 }

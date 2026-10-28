@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8">
@@ -18,6 +18,15 @@
         <div>
             <h1>🎮 GameStore</h1>
             <p>Каталог компьютерных игр</p>
+        </div>
+        <div class="admin-navigation"
+             sec:authorize="hasRole('ADMIN')">
+
+            <a th:href="@{/admin/users}"
+               class="admin-nav-link">
+                Управление пользователями
+            </a>
+
         </div>
 
         <nav>
@@ -88,6 +97,36 @@
         </article>
 
     </div>
+
+    <!-- Пагинация каталога -->
+    <nav class="pagination"
+         aria-label="Навигация по страницам"
+         th:if="${totalPages > 1}">
+
+        <!-- Предыдущая страница -->
+        <a th:if="${currentPage > 0}"
+           th:href="@{/games(page=${currentPage - 1})}"
+           class="page-link">
+            ← Назад
+        </a>
+
+        <!-- Номера страниц -->
+        <a th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}"
+           th:href="@{/games(page=${pageNumber})}"
+           th:text="${pageNumber + 1}"
+           th:classappend="${pageNumber == currentPage} ? ' active' : ''"
+           th:attr="aria-current=${pageNumber == currentPage} ? 'page' : null"
+           class="page-link">
+        </a>
+
+        <!-- Следующая страница -->
+        <a th:if="${currentPage < totalPages - 1}"
+           th:href="@{/games(page=${currentPage + 1})}"
+           class="page-link">
+            Далее →
+        </a>
+
+    </nav>
 
 </main>
 

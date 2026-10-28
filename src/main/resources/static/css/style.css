@@ -87,8 +87,10 @@ body {
 
 .games-grid {
     display: grid;
-    grid-template-columns:
+    /*grid-template-columns:
         repeat(auto-fill, minmax(220px, 1fr));
+     */
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 24px;
 }
 
@@ -448,4 +450,155 @@ button:hover {
 
 .btn-edit:hover {
     background-color: #065f7a;
+}
+
+/* Кнопка мягкого удаления игры */
+
+.btn-delete {
+    padding: 10px 18px;
+    background-color: #c0392b;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: inherit;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-delete:hover {
+    background-color: #922b21;
+}
+
+.game-management form {
+    margin: 0;
+}
+
+/* Пагинация каталога */
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 32px 0;
+}
+
+.page-link {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: white;
+    color: #087fa3;
+    border: 1px solid #d5dee5;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+
+.page-link:hover {
+    background-color: #e4f3f8;
+}
+
+.page-link.active {
+    background-color: #087fa3;
+    color: white;
+    border-color: #087fa3;
+}
+
+/* Управление пользователями */
+
+.users-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 24px;
+}
+
+.users-table th,
+.users-table td {
+    padding: 14px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+.users-table th {
+    background-color: #f1f5f9;
+    color: #1f2937;
+}
+
+.users-table select {
+    padding: 8px;
+    border-radius: 6px;
+    margin-right: 10px;
+}
+
+.users-table button {
+    padding: 8px 14px;
+    border: none;
+    border-radius: 6px;
+    background-color: #0d9488;
+    color: white;
+    cursor: pointer;
+}
+
+.users-table button:hover {
+    background-color: #0f766e;
+}
+
+/* Навигация администратора */
+
+.admin-navigation {
+    display: flex;
+    gap: 12px;
+    margin: 16px 0 24px;
+}
+
+.admin-nav-link {
+    display: inline-block;
+    padding: 10px 16px;
+    border-radius: 8px;
+    background-color: #0d9488;
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.admin-nav-link:hover {
+    background-color: #0f766e;
+}
+
+/* Галерея скриншотов игры */
+
+.game-screenshots {
+    margin-top: 36px;
+}
+
+.game-screenshots h2 {
+    margin-bottom: 18px;
+}
+
+.screenshots-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.screenshots-grid a {
+    display: block;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.screenshots-grid img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: 10px;
+    transition: transform 0.2s ease;
+}
+
+.screenshots-grid a:hover img {
+    transform: scale(1.04);
 }

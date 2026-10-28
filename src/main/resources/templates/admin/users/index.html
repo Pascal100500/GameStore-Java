@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Управление пользователями — GameStore</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<main class="container">
+
+    <h1>Управление пользователями</h1>
+
+    <p>
+        <a th:href="@{/games}">← Вернуться в каталог</a>
+    </p>
+
+    <p th:if="${success}"
+       th:text="${success}"
+       style="color: green;"></p>
+
+    <p th:if="${error}"
+       th:text="${error}"
+       style="color: red;"></p>
+
+    <table class="users-table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Имя пользователя</th>
+            <th>Текущая роль</th>
+            <th>Изменить роль</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.id}"></td>
+            <td th:text="${user.username}"></td>
+            <td th:text="${user.role}"></td>
+
+            <td>
+                <form th:action="@{/admin/users/{id}/role(id=${user.id})}"
+                      method="post">
+
+                    <select name="role">
+                        <option th:each="role : ${roles}"
+                                th:value="${role}"
+                                th:text="${role}"
+                                th:selected="${role == user.role}">
+                        </option>
+                    </select>
+
+                    <button type="submit">
+                        Сохранить
+                    </button>
+
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</main>
+
+</body>
+</html>

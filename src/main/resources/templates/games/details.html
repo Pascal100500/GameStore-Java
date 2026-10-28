@@ -94,11 +94,69 @@
                     ✏️ Редактировать
                 </a>
 
+                <!-- Мягкое удаление: только ADMIN -->
+                <form sec:authorize="hasRole('ADMIN')"
+                      th:action="@{/admin/games/{id}/delete(id=${game.id})}"
+                      method="post"
+                      onsubmit="return confirm('Скрыть эту игру из каталога?');">
+
+                    <input type="hidden"
+                           th:name="${_csrf.parameterName}"
+                           th:value="${_csrf.token}">
+
+                    <button type="submit" class="btn-delete">
+                        🗑️ Удалить
+                    </button>
+
+                </form>
+
             </div>
 
         </div>
 
     </article>
+    <!-- Галерея скриншотов игры -->
+    <section class="game-screenshots"
+             th:if="${game.screenshot1Key != null
+                 or game.screenshot2Key != null
+                 or game.screenshot3Key != null}">
+
+        <h2>Скриншоты игры</h2>
+
+        <div class="screenshots-grid">
+
+            <a th:if="${game.screenshot1Key != null and !game.screenshot1Key.isBlank()}"
+               th:href="@{/games/{id}/screenshots/1(id=${game.id})}"
+               target="_blank"
+               rel="noopener noreferrer">
+
+                <img th:src="@{/games/{id}/screenshots/1(id=${game.id})}"
+                     alt="Скриншот игры №1"
+                     loading="lazy">
+            </a>
+
+            <a th:if="${game.screenshot2Key != null and !game.screenshot2Key.isBlank()}"
+               th:href="@{/games/{id}/screenshots/2(id=${game.id})}"
+               target="_blank"
+               rel="noopener noreferrer">
+
+                <img th:src="@{/games/{id}/screenshots/2(id=${game.id})}"
+                     alt="Скриншот игры №2"
+                     loading="lazy">
+            </a>
+
+            <a th:if="${game.screenshot3Key != null and !game.screenshot3Key.isBlank()}"
+               th:href="@{/games/{id}/screenshots/3(id=${game.id})}"
+               target="_blank"
+               rel="noopener noreferrer">
+
+                <img th:src="@{/games/{id}/screenshots/3(id=${game.id})}"
+                     alt="Скриншот игры №3"
+                     loading="lazy">
+            </a>
+
+        </div>
+    </section>
 
 </main>
 

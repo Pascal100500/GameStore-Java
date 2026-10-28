@@ -27,6 +27,10 @@ public class SecurityConfig {
                                 HttpMethod.POST,
                                 "/admin/games/{id}/edit"
                         ).hasAnyRole("ADMIN", "MANAGER")
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/games/{id}/screenshots/{number}"
+                        ).permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/manager/**").hasAnyRole("MANAGER", "ADMIN")
                         .requestMatchers("/user/**").hasAnyRole("USER", "MANAGER", "ADMIN")
